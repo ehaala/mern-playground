@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-var Task = require('../../models/Task');
+var Song = require('../../models/Song');
 
 router.get('/', function(req, res){
 	res.render('index')
@@ -9,58 +9,64 @@ router.get('/', function(req, res){
 
 router.route('/insert')
 .post(function(req,res) {
-	var task = new Task();
-		task.description = req.body.desc;
-		task.time = req.body.time;
-		task.day = req.body.day;
+	var song = new Song();
+		song.url = req.body.url;
+		song.type = req.body.type;
 
-	task.save(function(err) {
+	song.save(function(err) {
 		if (err)
 			res.send(err);
-		res.send('Task successfully added!');
+		res.send('Song successfully added!');
 	});
 })
 
 router.route('/update')
 .post(function(req, res) {
 	const doc = {
-		description: req.body.description,
-		time: req.body.time,
-		day: req.body.day
+		url: req.body.url,
+		type: req.body.type
 	};
 	console.log(doc);
-		Task.update({_id: req.body._id}, doc, function(err, result) {
+		Song.update({_id: req.body._id}, doc, function(err, result) {
 			if (err)
 				res.send(err);
-			res.send('Task successfully updated!');
+			res.send('Song successfully updated!');
 		});
 });
 
 router.get('/delete', function(req, res) {
 	var id = req.query.id;
-	Task.find({_id: id}).remove().exec(function(err, expense) {
+	Song.find({_id: id}).remove().exec(function(err, expense) {
 		if(err)
 			res.send(err)
-		res.send('Task successfully deleted!');
+		res.send('Song successfully deleted!');
 	})
 });
 
 router.get('/getAll', function(req, res) {
-	var dayRec = req.query.day;
-	if(dayRec && dayRec != 'All'){
-		Task.find({$and: [ {day: dayRec}]},
-		function(err, tasks) {
+	var typeRec = req.query.type;
+	if(typeRec && typeRec != 'All'){
+		Song.find({$and: [ {type: typeRec}]},
+		function(err, songs) {
 			if (err)
 				res.send(err);
-			res.json(tasks);
+			res.json(songs);
 		});
 	} else {
-		Task.find({day: dayRec}, function(err, tasks) {
+		Song.find({type: typeRec}, function(err, songs) {
 			if (err)
 				res.send(err);
-			res.json(tasks);
+			res.json(songs);
 		});
 	}
 });
+
+// router.get('/getAll', function(req, res) {
+// 	Song.findAll().then(function(err, songs) {
+// 		if (err)
+// 			res.send(err);
+// 		res.json(songs);
+// 	});
+// })
 
 module.exports = router;

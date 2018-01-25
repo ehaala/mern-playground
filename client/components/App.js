@@ -2,51 +2,52 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Add from './Add';
-import Update from './Update';
+
+const songs = [
+'https://open.spotify.com/embed?uri=spotify:track:02DGz57a3TK3jNiibbnxaK&theme=white',
+'https://open.spotify.com/embed?uri=spotify:track:6mVjlizvk7mq58DJl7pQ2j&theme=white',
+'https://open.spotify.com/embed?uri=spotify:track:3whrwq4DtvucphBPUogRuJ&theme=white'
+]
+const spot = 'https://open.spotify.com/embed?uri='
 
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      selectedDay:'Mon',
-      data: []
+      spotify: []
     };
 
-    this.getData = this.getData.bind(this);
   }
 
   componentDidMount() {
-    this.getData(this, 'Mon');
+    this.getData(this, 'Spotify');
   }
 
   componentWillReceiveProps(nextProps) {
-    this.getData(this, 'Mon');
+    this.getData(this, 'Spotify');
   }
 
-  getData(ev, day){
-    axios.get('/getAll?day='+day)
+  getData(ev, type) {
+    axios.get('/getAll?type='+type)
       .then(function(response) {
-        ev.setState({data: response.data});
-        ev.setState({selectedDay: parseInt(day)})
+        ev.setState({spotify: response.data});
       });
   }
+
+// spotify:track:2XW4DbS6NddZxRPm5rMCeY
+
   render() {
       return (
         <div>
-          <Add selectedDay={this.state.selectedDay} />
-          <table>
-            <thead>
-              <tr><th></th><th className='desc-col'>Description</th><th className='button-col'>Time (Hours)</th><th className='button-col'>Day</th><th className='button-col'>Update</th></tr>
-            </thead>
-            <tbody>
-              {
-                this.state.data.map(function(task){
-                  return  <tr><td className='counterCell'></td><td className='desc-col'>{task.description}</td><td className='button-col'>{task.time}</td><td className='button-col'>{task.day}</td><td className='button-col'><Update task={task} /></td></tr>
-                })
-              }
-              </tbody>
-  </table>
+          <Add />
+          {this.state.spotify.map((song, i) =>
+            <div key={'song_' + i} className="songs">
+              <iframe src={spot + song.url} 
+              width="90%" height="380" frameBorder="0" allowtransparency="true">
+              </iframe>
+            </div>
+          )}
         </div>
       );
-    }
+  }
 }
