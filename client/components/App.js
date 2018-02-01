@@ -2,29 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Add from './Add';
-
-const songs = [
-'https://open.spotify.com/embed?uri=spotify:track:02DGz57a3TK3jNiibbnxaK&theme=white',
-'https://open.spotify.com/embed?uri=spotify:track:6mVjlizvk7mq58DJl7pQ2j&theme=white',
-'https://open.spotify.com/embed?uri=spotify:track:3whrwq4DtvucphBPUogRuJ&theme=white'
-]
-const spot = 'https://open.spotify.com/embed?uri='
+import Carousel from './Carousel';
 
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      spotify: []
+      spotify: [],
+      youtube: []
     };
 
   }
 
   componentDidMount() {
     this.getData(this, 'Spotify');
+    this.getData2(this, 'YouTube');
   }
 
   componentWillReceiveProps(nextProps) {
     this.getData(this, 'Spotify');
+    this.getData2(this, 'YouTube');
   }
 
   getData(ev, type) {
@@ -34,19 +31,18 @@ export default class App extends React.Component {
       });
   }
 
-// spotify:track:2XW4DbS6NddZxRPm5rMCeY
+  getData2(ev, type) {
+    axios.get('/getAll?type='+type)
+      .then(function(response) {
+        ev.setState({youtube: response.data});
+      });
+  }
 
   render() {
       return (
         <div>
           <Add />
-          {this.state.spotify.map((song, i) =>
-            <div key={'song_' + i} className="songs">
-              <iframe src={spot + song.url} 
-              width="90%" height="380" frameBorder="0" allowtransparency="true">
-              </iframe>
-            </div>
-          )}
+          <Carousel spotify={this.state.spotify} youtube={this.state.youtube}/>
         </div>
       );
   }
