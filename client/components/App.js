@@ -41,7 +41,6 @@ export default class App extends React.Component {
   render() {
       return (
         <div>
-          <Add />
           <Carousel spotify={this.state.spotify} youtube={this.state.youtube}/>
         </div>
       );

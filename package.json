@@ -8,16 +8,21 @@
     "body-parser": "^1.18.2",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
+    "material-ui": "^0.20.0",
     "mongoose": "^5.0.1",
     "nodemon": "^1.14.11",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
     "react-modal": "^3.1.11",
+    "react-redux": "^5.0.6",
     "react-responsive-carousel": "^3.1.33",
     "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
     "react-scripts": "1.1.0",
-    "react-slick": "^0.17.1"
+    "react-slick": "^0.17.1",
+    "redux": "^3.7.2",
+    "redux-auth": "0.0.5-beta5"
   },
   "scripts": {
     "webpack": "webpack",

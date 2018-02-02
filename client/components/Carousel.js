@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Slider from 'react-slick'
 
 const spot = 'https://open.spotify.com/embed?uri='
